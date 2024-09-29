@@ -1,4 +1,4 @@
-import express, { Request, Response } from "express";
+import express from "express";
 import dotenv from "dotenv";
 import cors from "cors";
 
@@ -11,7 +11,7 @@ app.use(express.json());
 import gptRoutes from "./routes/gpt.routes";
 app.use("/api", gptRoutes);
 
-app.use("/", (req: Request, res: Response) => {
+app.use("/", (req, res) => {
   res.send("Hello World");
 });
 

@@ -1,20 +1,8 @@
-import { Request, Response } from "express";
-import axios from "axios";
+const axios = require("axios");
 
 const HUGGING_FACE_API_KEY = process.env.HUGGING_FACE_API_KEY;
 
-interface GenerateNamesRequestBody {
-  description: string;
-}
-
-interface GenerateNamesResponse {
-  names: string[];
-}
-
-export const generateNames = async (
-  req: Request<{}, {}, GenerateNamesRequestBody>,
-  res: Response<GenerateNamesResponse | { error: string }>
-): Promise<void> => {
+const generateNames = async (req, res) => {
   const { description } = req.body;
 
   if (!description || typeof description !== "string") {
@@ -59,11 +47,8 @@ Names:
     const generatedText = response.data[0].generated_text.trim();
     const generatedNames = generatedText
       .split("\n")
-      .map((name: string) => name.replace(/^\d+\.\s*/, "").trim())
-      .filter(
-        (name: string) =>
-          name !== "" && !name.toLowerCase().startsWith("names:")
-      )
+      .map((name) => name.replace(/^\d+\.\s*/, "").trim())
+      .filter((name) => name !== "" && !name.toLowerCase().startsWith("names:"))
       .slice(0, 5);
 
     if (generatedNames.length < 5) {
@@ -75,15 +60,14 @@ Names:
     console.error("Error generating names:", error);
     res
       .status(
-        error instanceof Error && error.message.includes("Failed to generate")
+        error.message && error.message.includes("Failed to generate")
           ? 400
           : 500
       )
       .json({
-        error:
-          error instanceof Error
-            ? error.message
-            : "An unexpected error occurred",
+        error: error.message || "An unexpected error occurred",
       });
   }
 };
+
+module.exports = { generateNames };
