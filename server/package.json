@@ -4,7 +4,7 @@
   "description": "A server for generating unique names using Hugging Face's model.",
   "main": "index.js",
   "scripts": {
-    "start": "ts-node src/server/index.ts",
+    "start": "ts-node src/server/server.ts",
     "build": "tsc",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
