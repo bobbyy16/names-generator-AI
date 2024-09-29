@@ -1,14 +1,15 @@
-import express from "express";
-import dotenv from "dotenv";
-import cors from "cors";
+const express = require("express");
+const dotenv = require("dotenv");
+const cors = require("cors");
+const gptRoutes = require("./routes/gpt.routes");
 
 dotenv.config();
+
 const app = express();
 
 app.use(cors());
 app.use(express.json());
 
-import gptRoutes from "./routes/gpt.routes";
 app.use("/api", gptRoutes);
 
 app.use("/", (req, res) => {

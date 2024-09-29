@@ -1,8 +1,7 @@
-import { Router } from "express";
+const express = require("express");
 
-import { generateNames } from "../controllers/gpt.controller";
-
-const router = Router();
+const { generateNames } = require("../controllers/gpt.controller.js");
+const router = express.Router();
 
 router.post("/generateNames", generateNames);
 
