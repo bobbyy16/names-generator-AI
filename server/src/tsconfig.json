@@ -1,0 +1,14 @@
+{
+  "compilerOptions": {
+    "target": "ES2015", // or a higher version
+    "module": "CommonJS", // or "ESNext" if you prefer ESM
+    "moduleResolution": "node", // Change to "nodenext" if using ESM
+    "esModuleInterop": true, // Required for importing CommonJS modules
+    "skipLibCheck": true, // Optional, but can speed up compilation
+    "forceConsistentCasingInFileNames": true, // Optional
+    "outDir": "./dist", // Specify output directory
+    "rootDir": "./src" // Specify root directory
+  },
+  "include": ["src/**/*"], // Include your source files
+  "exclude": ["node_modules"] // Exclude node_modules
+}
