@@ -5,4 +5,4 @@ const router = express.Router();
 
 router.post("/generateNames", generateNames);
 
-export default router;
+module.exports = router;
