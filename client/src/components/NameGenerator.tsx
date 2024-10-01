@@ -19,6 +19,9 @@ const NameGenerator: React.FC = () => {
     setLoading(true);
     setError(null);
 
+    // Clear previous names before generating new ones
+    setNames([]);
+
     try {
       const response = await axios.post(
         "https://names-generator-ai.onrender.com/api/generateNames",
@@ -47,7 +50,6 @@ const NameGenerator: React.FC = () => {
       }
     } finally {
       setLoading(false);
-      setNames([]);
     }
   };
 
