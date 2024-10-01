@@ -13,6 +13,11 @@ async function generateNames(req, res) {
   try {
     const result = await model.generateContent(prompt);
     const text = result.response.text();
+    if (!text) {
+      throw new Error(
+        "Invalid response from AI. Try giving more descriptive description or your description might contain some offensive words, try with different description."
+      );
+    }
     const generatedNames = text.split("\n");
 
     // Check if any generated name contains more than one word
