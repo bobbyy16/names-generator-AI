@@ -2,7 +2,7 @@
 
 A sophisticated React TypeScript application that leverages the power of Google's Gemini API to generate unique and creative names based on user-provided descriptions. This project showcases modern web development practices and integrates cutting-edge AI technology.
 
-![Alt text](https://www.imghippo.com/i/NlnuH1727771305.png)
+![Alt text](https://github.com/bobbyy16/names-generator-AI/blob/main/client/public/name-generator.png)
 
 ## 🌟 Features
 
