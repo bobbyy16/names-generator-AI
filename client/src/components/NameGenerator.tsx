@@ -26,14 +26,14 @@ const NameGenerator: React.FC = () => {
       const generatedNames = response.data.generatedNames;
 
       // Check if any of the generated names have more than one word
-      const invalidNames = generatedNames.filter(
-        (name: string) => name.split(" ").length > 1
-      );
+      // const invalidNames = generatedNames.filter(
+      //   (name: string) => name.split(" ").length > 1
+      // );
 
-      if (invalidNames.length > 0) {
-        setError("One or more generated names have more than one word.");
-        return;
-      }
+      // if (invalidNames.length > 0) {
+      //   setError("One or more generated names have more than one word.");
+      //   return;
+      // }
 
       setNames(generatedNames);
       localStorage.setItem("generatedNames", JSON.stringify(generatedNames));
