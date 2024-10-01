@@ -19,7 +19,7 @@ const NameGenerator: React.FC = () => {
 
     try {
       const response = await axios.post(
-        "http://localhost:8080/api/generateNames",
+        "https://names-generator-ai.onrender.com/api/generateNames",
         { description }
       );
       setNames(response.data.generatedNames);
