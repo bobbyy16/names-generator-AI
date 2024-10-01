@@ -8,46 +8,29 @@ async function generateNames(req, res) {
   const model = genAI.getGenerativeModel({ model: "gemini-1.5-flash" });
 
   const prompt = `Generate 12 unique and creative names for a social media handle or shop based on this ${description}.
-    Provide only the names, separated by newlines, without any additional text or numbering.`;
+    Provide only the names, separated by newlines, without any additional text or numbering`;
 
   try {
     const result = await model.generateContent(prompt);
-    const text = await result.response.text(); // Make sure to await here for proper handling
-    console.log(text);
+    const text = result.response.text();
+    const generatedNames = text.split("\n");
 
-    const generatedNames = text
-      .split("\n")
-      .map((name) => name.trim()) // Trim whitespace
-      .filter((name) => name.length > 0); // Remove any empty lines
-
-    // Check if all names are single-word
+    // Check if any generated name contains more than one word
     const invalidName = generatedNames.find(
       (name) => name.split(" ").length > 1
     );
-
     if (invalidName) {
-      throw new Error(
-        `Invalid name found: "${invalidName}". All names must be single-word.`
-      );
+      return res.status(400).json({
+        message:
+          "Invalid response from AI. Try giving more descriptive description or your description might contain some offensive words, try with different description.",
+        response: text,
+      });
     }
-
-    if (generatedNames.length !== 12) {
-      throw new Error(
-        "The AI did not generate exactly 12 valid names. Please try again."
-      );
-    }
-
-    console.log(generatedNames);
 
     res.status(200).json({ generatedNames });
   } catch (error) {
-    console.error("Error generating names:", error.message);
-    res
-      .status(500)
-      .json({
-        error:
-          error.message || "Failed to generate valid names. Please try again.",
-      });
+    console.error("Error generating names:", error);
+    res.status(500).json({ message: "Server error", error: error.message });
   }
 }
 
