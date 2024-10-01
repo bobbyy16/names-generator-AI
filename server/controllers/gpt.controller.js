@@ -1,73 +1,29 @@
-const axios = require("axios");
+const { GoogleGenerativeAI } = require("@google/generative-ai");
 
-const HUGGING_FACE_API_KEY = process.env.HUGGING_FACE_API_KEY;
+async function generateNames(req, res) {
+  const description = req.body.description;
+  const GOOGLE_API_KEY = process.env.GOOGLE_API_KEY;
 
-const generateNames = async (req, res) => {
-  const { description } = req.body;
+  const genAI = new GoogleGenerativeAI(GOOGLE_API_KEY);
+  const model = genAI.getGenerativeModel({ model: "gemini-1.5-flash" });
 
-  if (!description || typeof description !== "string") {
-    res.status(400).json({
-      error: "Invalid description: Please provide a string description.",
-    });
-    return;
-  }
+  const prompt = `Generate 5 unique and creative names for a social media handle or shop based on this ${description}.
+    Provide only the names, separated by newlines, without any additional text or numbering`;
 
   try {
-    const prompt = `Generate 5 unique and creative names for a social media handle or shop based on this : "${description}". Provide only the names, separated by newlines, without any additional text or numbering.
+    const result = await model.generateContent(prompt);
+    const text = result.response.text();
+    console.log(text);
 
-Names:
-1.`;
+    const generatedNames = text.split("\n");
 
-    const response = await axios.post(
-      "https://api-inference.huggingface.co/models/EleutherAI/gpt-neo-2.7B",
-      {
-        inputs: prompt,
-        parameters: {
-          max_new_tokens: 100,
-          temperature: 0.8,
-          top_k: 50,
-          top_p: 0.95,
-          num_return_sequences: 1,
-          do_sample: true,
-          return_full_text: false,
-        },
-      },
-      {
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${HUGGING_FACE_API_KEY}`,
-        },
-      }
-    );
+    console.log(generatedNames);
 
-    if (response.status !== 200) {
-      throw new Error(response.data.error || "Failed to generate names");
-    }
-
-    const generatedText = response.data[0].generated_text.trim();
-    const generatedNames = generatedText
-      .split("\n")
-      .map((name) => name.replace(/^\d+\.\s*/, "").trim())
-      .filter((name) => name !== "" && !name.toLowerCase().startsWith("names:"))
-      .slice(0, 5);
-
-    if (generatedNames.length < 5) {
-      throw new Error("Failed to generate enough unique names");
-    }
-
-    res.status(200).json({ names: generatedNames });
+    res.status(200).json({ generatedNames });
   } catch (error) {
     console.error("Error generating names:", error);
-    res
-      .status(
-        error.message && error.message.includes("Failed to generate")
-          ? 400
-          : 500
-      )
-      .json({
-        error: error.message || "An unexpected error occurred",
-      });
+    throw error;
   }
-};
+}
 
 module.exports = { generateNames };
