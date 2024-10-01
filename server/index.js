@@ -7,6 +7,8 @@ dotenv.config();
 
 const app = express();
 
+app.use(cors());
+
 // CORS options
 var corsOptions = {
   origin: "https://names-generator-ai.vercel.app",

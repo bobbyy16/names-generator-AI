@@ -7,7 +7,7 @@ async function generateNames(req, res) {
   const genAI = new GoogleGenerativeAI(GOOGLE_API_KEY);
   const model = genAI.getGenerativeModel({ model: "gemini-1.5-flash" });
 
-  const prompt = `Generate 5 unique and creative names for a social media handle or shop based on this ${description}.
+  const prompt = `Generate 12 unique and creative names for a social media handle or shop based on this ${description}.
     Provide only the names, separated by newlines, without any additional text or numbering`;
 
   try {
