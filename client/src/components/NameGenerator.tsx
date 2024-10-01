@@ -7,6 +7,7 @@ const NameGenerator: React.FC = () => {
   const [names, setNames] = useState<string[]>([]);
   const [error, setError] = useState<string | null>(null);
   const [loading, setLoading] = useState(false);
+  const [serverResponse, setServerResponse] = useState<string | null>(null);
 
   const generateNames = async () => {
     if (!description) {
@@ -16,6 +17,7 @@ const NameGenerator: React.FC = () => {
 
     setLoading(true);
     setError(null);
+    setServerResponse(null);
 
     try {
       const response = await axios.post(
@@ -23,6 +25,7 @@ const NameGenerator: React.FC = () => {
         { description }
       );
       setNames(response.data.generatedNames);
+      setServerResponse(JSON.stringify(response.data, null, 2)); // Save full server response
       localStorage.setItem(
         "generatedNames",
         JSON.stringify(response.data.generatedNames)
@@ -50,6 +53,12 @@ const NameGenerator: React.FC = () => {
       <h1 className="text-3xl sm:text-4xl font-bold text-center mb-6 text-purple-700">
         Name Generator
       </h1>
+
+      <h2 className="text-lg text-gray-600 text-center mb-4">
+        Enter a description of your brand, business, or social media handle to
+        generate creative name suggestions. Keep it brief and descriptive.
+      </h2>
+
       <div className="space-y-4 max-w-lg mx-auto">
         <textarea
           className="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-transparent transition duration-200 ease-in-out resize-none"
@@ -79,6 +88,15 @@ const NameGenerator: React.FC = () => {
 
       {error && (
         <p className="text-red-500 mt-4 text-center font-medium">{error}</p>
+      )}
+
+      {serverResponse && (
+        <div className="mt-6 bg-gray-100 p-4 rounded-lg text-left text-sm text-gray-700">
+          <h3 className="text-lg font-bold text-gray-700 mb-2">
+            Server Response:
+          </h3>
+          <pre>{serverResponse}</pre>
+        </div>
       )}
 
       {names.length > 0 && (
