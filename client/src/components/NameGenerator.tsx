@@ -8,6 +8,8 @@ const NameGenerator: React.FC = () => {
   const [error, setError] = useState<string | null>(null);
   const [loading, setLoading] = useState(false);
 
+  // const clearData = "";
+
   const generateNames = async () => {
     if (!description) {
       setError("Please enter a description.");
@@ -45,6 +47,7 @@ const NameGenerator: React.FC = () => {
       }
     } finally {
       setLoading(false);
+      setNames([]);
     }
   };
 
