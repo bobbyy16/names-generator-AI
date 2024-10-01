@@ -9,7 +9,7 @@ const app = express();
 
 // CORS options
 var corsOptions = {
-  origin: "https://names-generator-ai.vercel.app/",
+  origin: "https://names-generator-ai.vercel.app",
   optionsSuccessStatus: 200,
 };
 
