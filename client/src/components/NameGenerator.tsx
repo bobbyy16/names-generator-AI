@@ -24,14 +24,29 @@ const NameGenerator: React.FC = () => {
         "https://names-generator-ai.onrender.com/api/generateNames",
         { description }
       );
-      setNames(response.data.generatedNames);
-      setServerResponse(JSON.stringify(response.data, null, 2)); // Save full server response
-      localStorage.setItem(
-        "generatedNames",
-        JSON.stringify(response.data.generatedNames)
+
+      const generatedNames = response.data.generatedNames;
+
+      // Check if any of the generated names have more than one word
+      const invalidNames = generatedNames.filter(
+        (name: string) => name.split(" ").length > 1
       );
-    } catch (err) {
-      setError("Failed to generate names. Please try again.");
+
+      if (invalidNames.length > 0) {
+        setError("One or more generated names have more than one word.");
+        setServerResponse(JSON.stringify(response.data, null, 2)); // Print entire server response
+        return;
+      }
+
+      setNames(generatedNames);
+      localStorage.setItem("generatedNames", JSON.stringify(generatedNames));
+    } catch (err: any) {
+      if (err.response && err.response.data && err.response.data.message) {
+        setError(err.response.data.message);
+        setServerResponse(err.response.data.response); // Set server response to display
+      } else {
+        setError("Failed to generate names. Please try again.");
+      }
     } finally {
       setLoading(false);
     }
@@ -105,7 +120,7 @@ const NameGenerator: React.FC = () => {
             Generated Names:
           </h2>
           <ul className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-            {names.slice(0, -1).map((name, index) => (
+            {names.map((name, index) => (
               <li
                 key={index}
                 className="text-md font-medium text-gray-700 bg-purple-100 p-3 rounded-md hover:bg-purple-200 transition-all duration-300 ease-in-out flex items-center justify-center"
