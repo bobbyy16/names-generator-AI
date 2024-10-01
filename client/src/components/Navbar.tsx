@@ -1,5 +1,5 @@
 import React from "react";
-import { Home, Info, Github } from "lucide-react";
+import { Github } from "lucide-react";
 
 const Navbar: React.FC = () => {
   return (
