@@ -7,7 +7,6 @@ const NameGenerator: React.FC = () => {
   const [names, setNames] = useState<string[]>([]);
   const [error, setError] = useState<string | null>(null);
   const [loading, setLoading] = useState(false);
-  const [serverResponse, setServerResponse] = useState<string | null>(null);
 
   const generateNames = async () => {
     if (!description) {
@@ -17,7 +16,6 @@ const NameGenerator: React.FC = () => {
 
     setLoading(true);
     setError(null);
-    setServerResponse(null);
 
     try {
       const response = await axios.post(
@@ -34,7 +32,6 @@ const NameGenerator: React.FC = () => {
 
       if (invalidNames.length > 0) {
         setError("One or more generated names have more than one word.");
-        setServerResponse(JSON.stringify(response.data, null, 2)); // Print entire server response
         return;
       }
 
@@ -43,7 +40,6 @@ const NameGenerator: React.FC = () => {
     } catch (err: any) {
       if (err.response && err.response.data && err.response.data.message) {
         setError(err.response.data.message);
-        setServerResponse(err.response.data.response); // Set server response to display
       } else {
         setError("Failed to generate names. Please try again.");
       }
@@ -104,15 +100,6 @@ const NameGenerator: React.FC = () => {
       {error && (
         <p className="text-red-500 mt-4 text-center font-medium">{error}</p>
       )}
-
-      {/* {serverResponse && (
-        <div className="mt-6 bg-gray-100 p-4 rounded-lg text-left text-sm text-gray-700">
-          <h3 className="text-lg font-bold text-gray-700 mb-2">
-            Server Response:
-          </h3>
-          <pre>{serverResponse}</pre>
-        </div>
-      )} */}
 
       {names.length > 0 && (
         <div className="mt-8 bg-gray-50 p-6 rounded-lg shadow-inner max-w-lg mx-auto">
