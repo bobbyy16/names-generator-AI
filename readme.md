@@ -2,6 +2,8 @@
 
 A sophisticated React TypeScript application that leverages the power of Google's Gemini API to generate unique and creative names based on user-provided descriptions. This project showcases modern web development practices and integrates cutting-edge AI technology.
 
+[](https://www.imghippo.com/i/NlnuH1727771305.png)
+
 ## 🌟 Features
 
 - Intuitive user interface for inputting descriptions
