@@ -105,14 +105,14 @@ const NameGenerator: React.FC = () => {
         <p className="text-red-500 mt-4 text-center font-medium">{error}</p>
       )}
 
-      {serverResponse && (
+      {/* {serverResponse && (
         <div className="mt-6 bg-gray-100 p-4 rounded-lg text-left text-sm text-gray-700">
           <h3 className="text-lg font-bold text-gray-700 mb-2">
             Server Response:
           </h3>
           <pre>{serverResponse}</pre>
         </div>
-      )}
+      )} */}
 
       {names.length > 0 && (
         <div className="mt-8 bg-gray-50 p-6 rounded-lg shadow-inner max-w-lg mx-auto">
