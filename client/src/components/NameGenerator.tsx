@@ -37,6 +37,14 @@ const NameGenerator: React.FC = () => {
     }
   };
 
+  // Function to handle the 'Enter' key press
+  const handleKeyDown = (event: React.KeyboardEvent<HTMLTextAreaElement>) => {
+    if (event.key === "Enter") {
+      event.preventDefault(); // Prevent newline in textarea
+      generateNames(); // Call the name generation function
+    }
+  };
+
   useEffect(() => {
     const savedNames = localStorage.getItem("generatedNames");
     if (savedNames) {
@@ -61,11 +69,12 @@ const NameGenerator: React.FC = () => {
           placeholder="Enter a description..."
           value={description}
           onChange={(e) => setDescription(e.target.value)}
+          onKeyDown={handleKeyDown} // Handle Enter key press
           rows={4}
         />
         <button
           className="w-full bg-purple-600 text-white py-3 rounded-lg hover:bg-purple-700 transition duration-300 ease-in-out flex items-center justify-center space-x-2"
-          onClick={generateNames}
+          onClick={generateNames} // Handle button click
           disabled={loading}
         >
           {loading ? (
