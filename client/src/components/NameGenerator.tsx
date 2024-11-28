@@ -37,11 +37,10 @@ const NameGenerator: React.FC = () => {
     }
   };
 
-  // Function to handle the 'Enter' key press
   const handleKeyDown = (event: React.KeyboardEvent<HTMLTextAreaElement>) => {
-    if (event.key === "Enter") {
-      event.preventDefault(); // Prevent newline in textarea
-      generateNames(); // Call the name generation function
+    if (event.key === "Enter" && !event.shiftKey) {
+      event.preventDefault();
+      generateNames();
     }
   };
 
@@ -53,65 +52,78 @@ const NameGenerator: React.FC = () => {
   }, []);
 
   return (
-    <div className="w-full max-w-4xl mx-auto mt-8 px-4 sm:px-6 lg:px-8 py-8 bg-white shadow-md">
-      <h1 className="text-2xl sm:text-3xl lg:text-4xl font-bold text-center mb-4 sm:mb-6 text-purple-700">
-        Name Generator
-      </h1>
+    <div className="w-full max-w-md md:max-w-xl lg:max-w-4xl mx-auto p-4 md:p-6 lg:p-8">
+      <div className="bg-white shadow-md rounded-lg p-6 md:p-8">
+        <h1 className="text-2xl md:text-3xl lg:text-4xl font-bold text-center mb-4 text-purple-700">
+          Name Generator
+        </h1>
 
-      <h2 className="text-sm sm:text-base lg:text-lg text-gray-600 text-center mb-4 sm:mb-6">
-        Enter a description of your brand, business, or social media handle to
-        generate creative name suggestions. Keep it brief and descriptive.
-      </h2>
+        <p className="text-sm md:text-base lg:text-lg text-gray-600 text-center mb-6">
+          Enter a description of your brand, business, or social media handle to
+          generate creative name suggestions.
+        </p>
 
-      <div className="space-y-4 max-w-lg mx-auto">
-        <textarea
-          className="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-transparent transition duration-200 ease-in-out resize-none"
-          placeholder="Enter a description..."
-          value={description}
-          onChange={(e) => setDescription(e.target.value)}
-          onKeyDown={handleKeyDown} // Handle Enter key press
-          rows={4}
-        />
-        <button
-          className="w-full bg-purple-600 text-white py-3 rounded-lg hover:bg-purple-700 transition duration-300 ease-in-out flex items-center justify-center space-x-2"
-          onClick={generateNames} // Handle button click
-          disabled={loading}
-        >
-          {loading ? (
-            <>
-              <Loader2 className="animate-spin" size={20} />
-              <span>Generating...</span>
-            </>
-          ) : (
-            <>
-              <Sparkles size={20} />
-              <span>Generate Names</span>
-            </>
+        <div className="space-y-4 w-full">
+          <textarea
+            className="w-full p-3 text-sm md:text-base border border-gray-300 rounded-lg 
+            focus:ring-2 focus:ring-purple-500 focus:border-transparent 
+            transition duration-200 ease-in-out resize-none"
+            placeholder="Describe your brand or business..."
+            value={description}
+            onChange={(e) => setDescription(e.target.value)}
+            onKeyDown={handleKeyDown}
+            rows={4}
+          />
+
+          <button
+            className="w-full bg-purple-600 text-white py-3 rounded-lg 
+            hover:bg-purple-700 transition duration-300 ease-in-out 
+            flex items-center justify-center space-x-2 
+            text-sm md:text-base"
+            onClick={generateNames}
+            disabled={loading}
+          >
+            {loading ? (
+              <>
+                <Loader2 className="animate-spin mr-2" size={20} />
+                <span>Generating...</span>
+              </>
+            ) : (
+              <>
+                <Sparkles className="mr-2" size={20} />
+                <span>Generate Names</span>
+              </>
+            )}
+          </button>
+
+          {error && (
+            <p className="text-red-500 text-center text-sm md:text-base font-medium mt-4">
+              {error}
+            </p>
           )}
-        </button>
-      </div>
 
-      {error && (
-        <p className="text-red-500 mt-4 text-center font-medium">{error}</p>
-      )}
-
-      {names.length > 0 && (
-        <div className="mt-6 sm:mt-8 bg-gray-50 p-4 sm:p-6 rounded-lg shadow-inner max-w-lg mx-auto">
-          <h2 className="text-lg sm:text-xl font-bold mb-3 sm:mb-4 text-purple-600">
-            Generated Names:
-          </h2>
-          <ul className="grid grid-cols-1 sm:grid-cols-2 gap-3 sm:gap-4">
-            {names.map((name, index) => (
-              <li
-                key={index}
-                className="text-sm sm:text-base font-medium text-gray-700 bg-purple-100 p-2 sm:p-3 rounded-md hover:bg-purple-200 transition-all duration-300 ease-in-out flex items-center justify-center"
-              >
-                {name}
-              </li>
-            ))}
-          </ul>
+          {names.length > 0 && (
+            <div className="mt-6 bg-gray-50 p-4 md:p-6 rounded-lg shadow-inner">
+              <h2 className="text-lg md:text-xl font-bold mb-4 text-purple-600">
+                Generated Names:
+              </h2>
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-3 md:gap-4">
+                {names.map((name, index) => (
+                  <div
+                    key={index}
+                    className="text-sm md:text-base font-medium text-gray-700 
+                    bg-purple-100 p-2 md:p-3 rounded-md 
+                    hover:bg-purple-200 transition-all duration-300 
+                    text-center"
+                  >
+                    {name}
+                  </div>
+                ))}
+              </div>
+            </div>
+          )}
         </div>
-      )}
+      </div>
     </div>
   );
 };
